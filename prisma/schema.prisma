@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PlantStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SOLD
+}
+
+enum ListingType {
+  STANDARD
+  URGENT
+  VIP
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  CANCELED
+  FAILED
+}
+
+enum PaymentType {
+  URGENT_LISTING
+  VIP_LISTING
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  plants    Plant[]
+  payments  Payment[]
+}
+
+model Plant {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  category    String
+  imageUrl    String?
+  location    String?
+  listingType ListingType @default(STANDARD)
+  status      PlantStatus @default(PENDING)
+  views       Int         @default(0)
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paymentId   String?     @unique
+  payment     Payment?    @relation(fields: [paymentId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  expiresAt   DateTime?
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  yookassaId      String?       @unique
+  amount          Float
+  type            PaymentType
+  status          PaymentStatus @default(PENDING)
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plant           Plant?
+  metadata        String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model SiteSettings {
+  id              String @id @default("settings")
+  urgentPrice     Float  @default(299)
+  vipPrice        Float  @default(599)
+  urgentDays      Int    @default(7)
+  vipDays         Int    @default(30)
+  siteName        String @default("FloraMarket")
+  siteDescription String @default("Маркетплейс ботанических растений")
+  moderationEnabled Boolean @default(true)
+}

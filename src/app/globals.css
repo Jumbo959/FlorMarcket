@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest-50: #f0f7f4;
+  --color-forest-100: #dceee5;
+  --color-forest-200: #bbddcb;
+  --color-forest-300: #8fc5a8;
+  --color-forest-400: #5fa67e;
+  --color-forest-500: #3d8a5f;
+  --color-forest-600: #2d6f4b;
+  --color-forest-700: #25593d;
+  --color-forest-800: #204733;
+  --color-forest-900: #1b3b2b;
+  --color-sage-50: #f6f8f4;
+  --color-sage-100: #eaefe5;
+  --color-sage-200: #d5dfca;
+  --color-sage-300: #b5c7a3;
+  --color-sage-400: #94ab7a;
+  --color-sage-500: #77905c;
+  --color-cream: #faf8f3;
+  --color-gold: #c9a84c;
+  --color-gold-light: #e8d48b;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-forest-900 antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-forest-600 to-forest-400 bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/40;
+  }
+
+  .leaf-pattern {
+    background-image: radial-gradient(circle at 20% 50%, rgba(61, 138, 95, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(201, 168, 76, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(61, 138, 95, 0.03) 0%, transparent 50%);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 6s ease-in-out 2s infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-forest-50);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-forest-300);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-forest-400);
+}
