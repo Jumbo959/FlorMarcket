@@ -1,5 +1,7 @@
 import { getSettings } from "@/lib/settings";
 import { formatPrice } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 import { FadeIn } from "@/components/Animations";
 import Link from "next/link";
 import { Leaf, Zap, Crown, Check } from "lucide-react";
