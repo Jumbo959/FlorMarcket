@@ -34,7 +34,7 @@ export default function SellPage() {
 
   useEffect(() => {
     fetch("/api/settings").then((r) => r.json()).then(setSettings);
-    fetch("/api/auth/logout").then((r) => r.json()).then((d) => {
+    fetch("/api/auth/session", { credentials: "include" }).then((r) => r.json()).then((d) => {
       if (!d.user) router.push("/login?redirect=/sell");
     });
   }, [router]);

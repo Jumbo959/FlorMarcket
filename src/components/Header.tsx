@@ -21,11 +21,13 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    fetch("/api/auth/logout")
+    fetch("/api/auth/session", { credentials: "include" })
       .then((r) => r.json())
       .then((d) => setUser(d.user))
-      .catch(() => {});
+      .catch(() => setUser(null));
+  }, [pathname]);
 
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);

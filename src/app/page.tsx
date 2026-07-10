@@ -9,11 +9,15 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 async function getFeaturedPlants() {
-  return prisma.plant.findMany({
-    where: { status: "APPROVED" },
-    orderBy: [{ listingType: "desc" }, { createdAt: "desc" }],
-    take: 6,
-  });
+  try {
+    return await prisma.plant.findMany({
+      where: { status: "APPROVED" },
+      orderBy: [{ listingType: "desc" }, { createdAt: "desc" }],
+      take: 6,
+    });
+  } catch {
+    return [];
+  }
 }
 
 export default async function HomePage() {

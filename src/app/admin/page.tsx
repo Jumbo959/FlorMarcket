@@ -47,7 +47,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/auth/logout")
+    fetch("/api/auth/session", { credentials: "include" })
       .then((r) => r.json())
       .then((d) => {
         if (!d.user || d.user.role !== "ADMIN") {

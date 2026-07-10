@@ -7,17 +7,25 @@ import { prisma } from "@/lib/prisma";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { MapPin, Eye, Phone, Mail, User, Zap, Crown, ArrowLeft } from "lucide-react";
 
-async function getPlant(id: string) {
-  const plant = await prisma.plant.findUnique({
-    where: { id },
-    include: { user: { select: { name: true, phone: true, email: true } } },
-  });
-  return plant;
-}
-
 export default async function PlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const plant = await getPlant(id);
+
+  let plant;
+  try {
+    plant = await prisma.plant.findUnique({
+      where: { id },
+      include: { user: { select: { name: true, phone: true, email: true } } },
+    });
+
+    if (plant && plant.status === "APPROVED") {
+      await prisma.plant.update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      }).catch(() => {});
+    }
+  } catch {
+    notFound();
+  }
 
   if (!plant || plant.status !== "APPROVED") {
     notFound();

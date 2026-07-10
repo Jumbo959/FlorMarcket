@@ -7,7 +7,17 @@ import Link from "next/link";
 import { Leaf, Zap, Crown, Check } from "lucide-react";
 
 export default async function PricingPage() {
-  const settings = await getSettings();
+  let settings;
+  try {
+    settings = await getSettings();
+  } catch {
+    settings = {
+      urgentPrice: 299,
+      vipPrice: 599,
+      urgentDays: 7,
+      vipDays: 30,
+    };
+  }
 
   const plans = [
     {
